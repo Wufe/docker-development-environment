@@ -1,10 +1,20 @@
 FROM node:12.12
-MAINTAINER Simone Bembi <simone.bembi@gmail.com>
+LABEL maintainer="simone.bembi@gmail.com"
 
 RUN apt-get update && \
-    apt-get install -y zsh && \
+    apt-get install -y zsh gcc && \
     sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended && \
     yarn global add typescript && \
-    yarn global add parcel
+    yarn global add parcel && \
+    mkdir -p /opt/go && \
+	wget https://dl.google.com/go/go1.13.4.linux-amd64.tar.gz -O go.tar.gz && \
+	tar -xvf go.tar.gz && \
+	mv go /usr/local && \
+	echo "\nexport GOROOT=/usr/local/go" >> /root/.zshrc && \
+	echo "export GOPATH=$$HOME/Go" >> /root/.zshrc && \
+	echo "export PATH=$$GOPATH/bin:$$GOROOT/bin:$$PATH" >> /root/.zshrc && \
+    /usr/local/go/bin/go version && \
+	/usr/local/go/bin/go env && \
+	rm -rf /opt/go
 
 CMD tail -f /dev/null
