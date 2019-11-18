@@ -11,8 +11,8 @@ RUN apt-get update && \
 	tar -xvf go.tar.gz && \
 	mv go /usr/local && \
 	echo "\nexport GOROOT=/usr/local/go" >> /root/.zshrc && \
-	echo "export GOPATH=$$HOME/Go" >> /root/.zshrc && \
-	echo "export PATH=$$GOPATH/bin:$$GOROOT/bin:$$PATH" >> /root/.zshrc && \
+	echo "export GOPATH=\$HOME/Go" >> /root/.zshrc && \
+	echo "export PATH=\$GOPATH/bin:\$GOROOT/bin:\$PATH" >> /root/.zshrc && \
     /usr/local/go/bin/go version && \
 	/usr/local/go/bin/go env && \
 	rm -rf /opt/go
