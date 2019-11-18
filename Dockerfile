@@ -1,6 +1,8 @@
 FROM node:12.12
 LABEL maintainer="simone.bembi@gmail.com"
 
+USER root
+
 RUN apt-get update && \
     apt-get install -y zsh gcc && \
     sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended && \
@@ -11,10 +13,16 @@ RUN apt-get update && \
 	tar -xvf go.tar.gz && \
 	mv go /usr/local && \
 	echo "\nexport GOROOT=/usr/local/go" >> /root/.zshrc && \
-	echo "export GOPATH=\$HOME/Go" >> /root/.zshrc && \
+	echo "export GOPATH=\$HOME/go" >> /root/.zshrc && \
 	echo "export PATH=\$GOPATH/bin:\$GOROOT/bin:\$PATH" >> /root/.zshrc && \
     /usr/local/go/bin/go version && \
 	/usr/local/go/bin/go env && \
 	rm -rf /opt/go
+    
+RUN /usr/local/go/bin/go get github.com/canthefason/go-watcher && \
+    /usr/local/go/bin/go install github.com/canthefason/go-watcher/cmd/watcher
 
+SHELL ["/bin/zsh", "-c"]
+
+ENTRYPOINT []
 CMD tail -f /dev/null
